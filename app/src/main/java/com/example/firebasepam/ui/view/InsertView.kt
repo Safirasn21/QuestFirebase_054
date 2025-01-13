@@ -138,3 +138,51 @@ fun InsertBodyMahasiswa (
     }
 }
 
+@Composable
+fun FormMahasiswa(
+    mahasiswaEvent: MahasiswaEvent = MahasiswaEvent(),
+    onValueChange: (MahasiswaEvent) -> Unit,
+    errorState: FormErrorState = FormErrorState(),
+    modifier: Modifier = Modifier
+){
+    val jenisKelamin = listOf("Laki-Laki", "Perempuan")
+    val kelas = listOf("A", "B", "C", "D", "E")
+
+    Column (
+        modifier = modifier.fillMaxWidth()
+    ){
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.nama,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(nama = it))
+            },
+            label = { Text("Nama") },
+            isError = errorState.nama != null,
+            placeholder = { Text("Masukkan nama") },
+        )
+        Text(
+            text = errorState.nama ?: "",
+            color = Color.Red
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.nim,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(nama = it))
+            },
+            label = { Text("Nim") },
+            isError = errorState.nim != null,
+            placeholder = { Text("Masukkan nim") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Text(
+            text = errorState.nim ?: "",
+            color = Color.Red
+        )
+
+
+
+    }
+}
