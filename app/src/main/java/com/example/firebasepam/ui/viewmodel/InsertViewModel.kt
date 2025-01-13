@@ -101,3 +101,12 @@ data class MahasiswaEvent(
     val angkatan: String = ""
 )
 
+//menyimpan input form ke dalam entity
+fun MahasiswaEvent.toMahasiswaModel(): Mahasiswa = Mahasiswa(
+    nim = nim,
+    nama = nama,
+    jenisKelamin = jenisKelmain,
+    alamat = alamat,
+    kelas = kelas,
+    angkatan = angkatan
+)
