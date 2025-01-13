@@ -12,21 +12,21 @@ import kotlinx.coroutines.launch
 
 class InsertViewModel(
     private val mhs: MahasiswaRepository
-) : ViewModel() {
+) : ViewModel(){
     var uiEvent: InsertUiState by mutableStateOf(InsertUiState())
         private set
     var uiState: FormState by mutableStateOf(FormState.Idle)
         private set
 
     //memperbarui state berdasarkan input pengguna
-    fun updateState(mahasiswaEvent: MahasiswaEvent) {
+    fun updateState(mahasiswaEvent: MahasiswaEvent){
         uiEvent = uiEvent.copy(
             insertUiEvent = mahasiswaEvent,
         )
     }
 
     //validasi data input pengguna
-    fun validateFields(): Boolean {
+    fun validateFields(): Boolean{
         val event = uiEvent.insertUiEvent
         val errorState = FormErrorState(
             nim = if (event.nim.isNotEmpty()) null else "nim tidak boleh kosong",
@@ -35,25 +35,29 @@ class InsertViewModel(
             alamat = if (event.alamat.isNotEmpty()) null else "alamat tidak boleh kosong",
             kelas = if (event.kelas.isNotEmpty()) null else "kelas tidak boleh kosong",
             angkatan = if (event.angkatan.isNotEmpty()) null else "angkatan tidak boleh kosong",
-        )
+            )
         uiEvent = uiEvent.copy(isEntryValid = errorState)
         return errorState.isValid()
     }
 
-    fun insertMahasiswa() {
-        if (validateFields()) {
+    fun insertMahasiswa(){
+        if (validateFields()){
             viewModelScope.launch {
                 uiState = FormState.Loading
                 try {
                     mhs.insertMahasiswa(uiEvent.insertUiEvent.toMahasiswaModel())
                     uiState = FormState.Success("Data berhasil disimpan")
-                } catch (e: Exception) {
+                } catch (e:Exception){
                     uiState = FormState.Error("data gagal disimpan")
                 }
             }
-        } else {
+        } else{
             uiState = FormState.Error("data tidak valid")
         }
     }
 
-}
+    fun resetForm(){
+        uiEvent = InsertUiState()
+        uiState = FormState.Idle
+    }
+    
