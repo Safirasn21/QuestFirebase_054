@@ -12,12 +12,17 @@ import kotlinx.coroutines.launch
 
 class InsertViewModel(
     private val mhs: MahasiswaRepository
-) : ViewModel() {
+) : ViewModel(){
     var uiEvent: InsertUiState by mutableStateOf(InsertUiState())
         private set
     var uiState: FormState by mutableStateOf(FormState.Idle)
         private set
 
+    //memperbarui state berdasarkan input pengguna
+    fun updateState(mahasiswaEvent: MahasiswaEvent){
+        uiEvent = uiEvent.copy(
+            insertUiEvent = mahasiswaEvent,
+        )
+    }
 
-
-}
+    }
