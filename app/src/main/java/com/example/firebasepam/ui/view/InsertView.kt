@@ -1,15 +1,23 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.firebasepam.ui.view
 
+import android.provider.MediaStore.Audio.Radio
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -20,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
@@ -112,7 +121,7 @@ fun InsertBodyMahasiswa (
     Column (
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ){
         FormMahasiswa(
             mahasiswaEvent = uiState.insertUiEvent,
@@ -170,7 +179,7 @@ fun FormMahasiswa(
             modifier = Modifier.fillMaxWidth(),
             value = mahasiswaEvent.nim,
             onValueChange = {
-                onValueChange(mahasiswaEvent.copy(nama = it))
+                onValueChange(mahasiswaEvent.copy(nim = it))
             },
             label = { Text("Nim") },
             isError = errorState.nim != null,
@@ -182,7 +191,87 @@ fun FormMahasiswa(
             color = Color.Red
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Jenis Kelamin")
+        Row (
+            modifier = Modifier.fillMaxWidth()
+        ){
+            jenisKelamin.forEach{
+                jenisKelamin ->
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ){
+                    RadioButton(
+                        selected = mahasiswaEvent.jenisKelmain == jenisKelamin,
+                        onClick = {
+                            onValueChange(mahasiswaEvent.copy(jenisKelmain = jenisKelamin))
+                        },
+                    )
+                    Text(
+                        text = jenisKelamin,
+                    )
+                }
+            }
+        }
+        Text(
+            text = errorState.jenisKelamin ?: "",
+            color = Color.Red
+        )
 
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.alamat,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(alamat = it))
+            },
+            label = { Text("Alamat") },
+            isError = errorState.alamat != null,
+            placeholder = { Text("masukkan alamat") },
+        )
+        Text(text = errorState.alamat ?: "", color = Color.Red)
 
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Kelas")
+        Row (
+            modifier = Modifier.fillMaxWidth()
+        ){
+            kelas.forEach{
+                    kelas ->
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ){
+                    RadioButton(
+                        selected = mahasiswaEvent.kelas == kelas,
+                        onClick = {
+                            onValueChange(mahasiswaEvent.copy(kelas = kelas))
+                        },
+                    )
+                    Text(
+                        text = kelas,
+                    )
+                }
+            }
+        }
+        Text(
+            text = errorState.kelas ?: "",
+            color = Color.Red
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.angkatan,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(angkatan = it))
+            },
+            label = { Text("Angkatan") },
+            isError = errorState.angkatan != null,
+            placeholder = { Text("Masukkan angkatan") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Text(
+            text = errorState.angkatan ?: "",
+            color = Color.Red
+        )
     }
 }
