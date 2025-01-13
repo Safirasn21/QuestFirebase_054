@@ -3,6 +3,7 @@ package com.example.firebasepam.repository
 import com.example.firebasepam.model.Mahasiswa
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -46,10 +47,23 @@ class NetworkMahasiswaRepository (
     }
 
     override suspend fun deleteMahasiswa(nim: String) {
-
+        try {
+            firestore.collection("Mahasiswa").document(nim).delete().await()
+        }
+        catch (e:Exception){
+            throw Exception("Gagal menghapus data:${e.message}")
+        }
     }
 
-    override suspend fun getMahasiswabyNIM(nim: String): Flow<Mahasiswa> {
-        TODO("Not yet implemented")
+    override suspend fun getMahasiswabyNIM(nim: String): Flow<Mahasiswa> = callbackFlow {
+        val mhsDocument = firestore.collection("Mahasiswa").document(nim).addSnapshotListener{ value, error ->
+            if (value != null){
+                val mhs = value.toObject(Mahasiswa::class.java)!!
+                trySend(mhs)
+            }
+        }
+        awaitClose{
+            mhsDocument.remove()
+        }
     }
 }
