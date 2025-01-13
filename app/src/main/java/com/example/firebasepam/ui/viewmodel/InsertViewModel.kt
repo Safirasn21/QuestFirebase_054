@@ -25,4 +25,18 @@ class InsertViewModel(
         )
     }
 
+    //validasi data input pengguna
+    fun validateFields(): Boolean{
+        val event = uiEvent.insertUiEvent
+        val errorState = FormErrorState(
+            nim = if (event.nim.isNotEmpty()) null else "nim tidak boleh kosong",
+            nama = if (event.nama.isNotEmpty()) null else "nama tidak boleh kosong",
+            jenisKelamin = if (event.jenisKelmain.isNotEmpty()) null else "jenis kelamin tidak boleh kosong",
+            alamat = if (event.alamat.isNotEmpty()) null else "alamat tidak boleh kosong",
+            kelas = if (event.kelas.isNotEmpty()) null else "kelas tidak boleh kosong",
+            angkatan = if (event.angkatan.isNotEmpty()) null else "angkatan tidak boleh kosong",
+            )
+        uiEvent = uiEvent.copy(isEntryValid = errorState)
+        return errorState.isValid()
     }
+
