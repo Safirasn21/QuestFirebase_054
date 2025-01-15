@@ -12,7 +12,7 @@ import kotlinx.coroutines.tasks.await
 class NetworkMahasiswaRepository (
     private val firestore: FirebaseFirestore
 ): MahasiswaRepository{
-    override suspend fun getMahasiswa(): Flow<List<Mahasiswa>> = callbackFlow{
+    override suspend fun getMahasiswa(nim: String): Flow<List<Mahasiswa>> = callbackFlow{
         val mhsCollection = firestore.collection("Mahasiswa")
             .orderBy("nama", Query.Direction.ASCENDING)
             .addSnapshotListener{ value, error ->
