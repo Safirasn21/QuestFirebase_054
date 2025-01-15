@@ -22,7 +22,7 @@ class HomeViewModel(private val mhs: MahasiswaRepository): ViewModel(){
 
     fun getMhs(){
         viewModelScope.launch {
-            mhs.getMahasiswa()
+            mhs.getMahasiswa(nim = "")
                 .onStart {
                     mhsUiState = HomeUiState.Loading
                 }
@@ -42,7 +42,7 @@ class HomeViewModel(private val mhs: MahasiswaRepository): ViewModel(){
     fun deleteMahasiswa(mahasiswa: Mahasiswa){
         viewModelScope.launch {
             try {
-                mhs.deleteMahasiswa(mahasiswa)
+                mhs.deleteMahasiswa(mahasiswa.toString())
             }
             catch (e:Exception){
                 mhsUiState = HomeUiState.Error(e)

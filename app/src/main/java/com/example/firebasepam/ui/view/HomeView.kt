@@ -66,13 +66,15 @@ fun HomeScreen(
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Mahasiswa")
             }
+
         }
     ) {innerpadding->
         HomeStatus(
             homeUiState = viewModel.mhsUiState,
             retryAction = { viewModel.getMhs()}, modifier = Modifier.padding(innerpadding),
-            onDetailClick = onDetailClick, onDeleteClick = {
-                viewModel.getMhs()
+            onDetailClick = onDetailClick,
+            onDeleteClick = {
+                viewModel.deleteMahasiswa(it)
             }
         )
 
@@ -208,6 +210,22 @@ fun MhsCard(
             )
             Text(
                 text = mahasiswa.alamat,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = mahasiswa.angkatan,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = mahasiswa.judul,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = mahasiswa.dosen1,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = mahasiswa.dosen2,
                 style = MaterialTheme.typography.titleMedium
             )
         }

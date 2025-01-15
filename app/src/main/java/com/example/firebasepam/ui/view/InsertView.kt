@@ -44,6 +44,7 @@ import com.example.firebasepam.ui.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InsertMahasiswaView(
     onBack: () -> Unit,
@@ -271,6 +272,48 @@ fun FormMahasiswa(
         )
         Text(
             text = errorState.angkatan ?: "",
+            color = Color.Red
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.judul,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(judul = it))
+            },
+            label = { Text("Judul") },
+            isError = errorState.judul != null,
+            placeholder = { Text("Masukkan Judul Skripsi") },
+        )
+        Text(
+            text = errorState.judul ?: "",
+            color = Color.Red
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.dosen1,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(dosen1 =  it))
+            },
+            label = { Text("Nama Dosen") },
+            isError = errorState.dosen1 != null,
+            placeholder = { Text("Masukkan Nama Dosen pembimbing1") },
+        )
+        Text(
+            text = errorState.dosen1 ?: "",
+            color = Color.Red
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.dosen2,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(dosen2 = it))
+            },
+            label = { Text("Nama dosen2") },
+            isError = errorState.dosen2 != null,
+            placeholder = { Text("Masukkan Nama Dosen Pembimbing 2") },
+        )
+        Text(
+            text = errorState.dosen2 ?: "",
             color = Color.Red
         )
     }
