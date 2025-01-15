@@ -7,22 +7,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firebasepam.model.Mahasiswa
 import com.example.firebasepam.repository.MahasiswaRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 
-class HomeViewModel(private val mhs: MahasiswaRepository): ViewModel(){
+class HomeViewModel(private val mahasiswa: MahasiswaRepository): ViewModel(){
     var mhsUiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
         private set
 
     init {
-        getMhs()
+        getMahasiswa()
     }
 
-    fun getMhs(){
+    fun getMahasiswa(){
         viewModelScope.launch {
-            mhs.getMahasiswa(nim = "")
+            mahasiswa.getMahasiswa(nim = "")
                 .onStart {
                     mhsUiState = HomeUiState.Loading
                 }
@@ -42,7 +43,7 @@ class HomeViewModel(private val mhs: MahasiswaRepository): ViewModel(){
     fun deleteMahasiswa(mahasiswa: Mahasiswa){
         viewModelScope.launch {
             try {
-                mhs.deleteMahasiswa(mahasiswa.toString())
+                mahasiswa.deleteMahasiswa(mahasiswa.toString())
             }
             catch (e:Exception){
                 mhsUiState = HomeUiState.Error(e)
@@ -50,7 +51,15 @@ class HomeViewModel(private val mhs: MahasiswaRepository): ViewModel(){
         }
     }
 
+    fun insertMahasiswa(mahasiswa: Mahasiswa){
 
+    }
+    fun updateMahasiswa(nim:String, mahasiswa: Mahasiswa){
+
+    }
+    fun getMahasiswabyNIM(nim: String) {
+
+    }
 }
 
 sealed class HomeUiState{
